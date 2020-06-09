@@ -1,25 +1,22 @@
 Quantified Self Movement
 ========================
 
-##Getting started: Loading Packages and Figures
-
-First, load in required packages.
+First, we need to load in required packages.
 
 ```{r packages, message=FALSE}
 library(dplyr)
 library(lubridate)
-library(ggplot2)
 ```
 
-Read in the data.  
+Now, we read in the data.  
 
 ```{r read_in_data}
 movement_data <- read.csv("activity.csv", header = TRUE, stringsAsFactors = FALSE)
 ```
 
-##What is the mean total number of steps taken per day?
+The first question we must answer is "What is the mean total number of steps taken per day?".
 
-To generate this first figure, the data need to be grouped by date.  Then, all the steps need to be totalled for each day.
+In order generate this first figure, we need to group the data by date.  Next, for each unique date, we total the steps taken.
 
 ```{r total_steps}
 total_steps <- movement_data %>% group_by(date) %>% summarize(sum_steps = sum(steps, na.rm = T))%>% mutate(date = ymd(date)) 
@@ -27,7 +24,7 @@ total_steps <- movement_data %>% group_by(date) %>% summarize(sum_steps = sum(st
 head(total_steps)
 ```
 
-A quick look at this histogram will tell us the mean (red)total number of steps taken per day over this 2 month period.  It will also give us information on the median (blue) and the mode (highest bar).
+Then, we generate a histogram.
 
 ```{r total_steps_figure}
 hist(total_steps$sum_steps, breaks = 15, ylab = "Frequency", xlab = "Total Steps", main = "Total Number of Steps per Day", col = "white")
@@ -35,8 +32,33 @@ abline(v = mean(total_steps$sum_steps), col = "red", lwd = 2)
 abline(v = median(total_steps$sum_steps), col = "blue", lwd = 2)
 ```
 
-Here, we see that the mean total number of steps falls short of 10,000 steps a day, while the median is slightly higher than 10,000 steps a day.  This can be shown computationally, as well:
+A quick look at this histogram will tell us the mean (red) total number of steps taken per day over this 2 month period.  It will also give us information on the median (blue) and the mode (highest bar).
+
+Here, we see that the mean total number of steps falls short of 10,000 steps a day, while the median is slightly higher than 10,000 steps a day.  This can be shown computationally, as well.
 
 ```{r summary_calculations}
-summary(total_steps)
+summary(total_steps$sum_steps)
 ```
+
+This validates what our graph showed us:  the median total steps per day is 10,395 steps.  The mean is 9354 steps.
+
+
+The next question we are tasked with answering is "What is the average daily activity pattern?".  This we must answer with a time series plot.
+
+For this, we need to group the data by the interval variable, then take the average number of steps.
+
+```{r steps_interval_figure}
+interval_steps <- movement_data %>% group_by(interval) %>% summarize(mean_steps = mean(steps, na.rm = T))
+
+plot(interval_steps, type = "l", ylab = "Average Number of Steps", xlab = "5-Minute Interval", main = "Average Daily Activity")
+```
+
+Next, we can look at exactly which interval had the highest number of steps, on average.
+
+```{r }
+highest_interval <- which.max(interval_steps$mean_steps) %>% interval_steps[.,]
+
+print(highest_interval)
+```
+
+Here, we see that interval 835 has the highest average, about 206 steps.
