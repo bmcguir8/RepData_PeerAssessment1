@@ -10,6 +10,7 @@ First, we need to load in required packages.
 ```{r packages, message=FALSE}
 library(dplyr)
 library(lubridate)
+library(ggplot2)
 ```
 
 
@@ -150,7 +151,17 @@ weekday_data <- mutate(arranged_data, date = ymd(date), day = weekdays(date))
 
 weekday_vector <- weekday_data$day %>% gsub("Monday", "weekday",.) %>% gsub("Tuesday", "weekday",.) %>% gsub("Wednesday", "weekday",.) %>% gsub("Thursday", "weekday",.) %>% gsub("Friday", "weekday",.) %>% gsub("Saturday", "weekend",.) %>% gsub("Sunday", "weekend",.) 
 
-weekday_data <- mutate(weekday_data, day = as.factor(weekday_vector))
+weekday_data <- mutate(weekday_data, day = weekday_vector)
 
 table(weekday_data$day)
+```
+
+So, in this data set, we have 12,960 weekday data points, and 4,608 weekend data points.  We can graph their means separately.
+
+```{r weekday_graph}
+weekday_mean <- weekday_data %>% group_by(interval, day) %>% summarize(steps = mean(steps)) 
+
+ggplot(weekday_mean, aes(x = interval, y = steps)) + geom_line() + facet_grid(rows = vars(day)) + labs(title = "Average Steps Per Interval") + ylab("Average Number of Steps")
+
+
 ```
