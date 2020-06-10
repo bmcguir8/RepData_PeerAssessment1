@@ -4,6 +4,13 @@ output:
   html_document:
     keep_md: true
 ---
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_chunk$set( fig.path = "figs/fig-")
+
+```
 
 First, we need to load in required packages.
 
@@ -165,3 +172,5 @@ ggplot(weekday_mean, aes(x = interval, y = steps)) + geom_line() + facet_grid(ro
 
 
 ```
+
+From this graph, we see that this individual usually got up earlier in the day and started to wind down earlier on weekdays.  The 2 peaks during weekdays moving from left to right might correspond to leaving for work, and returning from work, respectively. 

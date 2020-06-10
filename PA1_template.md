@@ -5,6 +5,7 @@ output:
     keep_md: true
 ---
 
+
 First, we need to load in required packages.
 
 
@@ -59,7 +60,7 @@ abline(v = mean(total_steps$sum_steps), col = "red", lwd = 2)
 abline(v = median(total_steps$sum_steps), col = "blue", lwd = 2)
 ```
 
-![](PA1_template_files/figure-html/total_steps_figure-1.png)<!-- -->
+![](figs/fig-total_steps_figure-1.png)<!-- -->
 
 A quick look at this histogram will tell us the mean (red) total number of steps taken per day over this 2 month period.  It will also give us information on the median (blue) and the mode (highest bar).
 
@@ -91,7 +92,7 @@ interval_steps <- movement_data %>% group_by(interval) %>% summarize(mean_steps 
 plot(interval_steps, type = "l", ylab = "Average Number of Steps", xlab = "5-Minute Interval", main = "Average Daily Activity")
 ```
 
-![](PA1_template_files/figure-html/steps_interval_figure-1.png)<!-- -->
+![](figs/fig-steps_interval_figure-1.png)<!-- -->
 
 Next, we can look at exactly which interval had the highest number of steps, on average.
 
@@ -207,7 +208,7 @@ abline(v = mean(new_total_steps$steps), col = "red", lwd = 2)
 abline(v = median(new_total_steps$steps), col = "blue", lwd = 2)
 ```
 
-![](PA1_template_files/figure-html/steps_per_day-1.png)<!-- -->
+![](figs/fig-steps_per_day-1.png)<!-- -->
 
 Next, we'll calculate the mean and median, and compare it back to the mean and median of our un-imputed data set.
 
@@ -257,6 +258,6 @@ weekday_mean <- weekday_data %>% group_by(interval, day) %>% summarize(steps = m
 ggplot(weekday_mean, aes(x = interval, y = steps)) + geom_line() + facet_grid(rows = vars(day)) + labs(title = "Average Steps Per Interval") + ylab("Average Number of Steps")
 ```
 
-![](PA1_template_files/figure-html/weekday_graph-1.png)<!-- -->
+![](figs/fig-weekday_graph-1.png)<!-- -->
 
 From this graph, we see that this individual usually got up earlier in the day and started to wind down earlier on weekdays.  The 2 peaks during weekdays moving from left to right might correspond to leaving for work, and returning from work, respectively. 
